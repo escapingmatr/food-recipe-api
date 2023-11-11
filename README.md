@@ -5,9 +5,9 @@ Web app for sharing food recipes developed with NodeJS, providing APIs
 DB Structure:
 recipes
 
-| id | SERIAL PRIMARY KEY
-| name | VARCHAR(255)
-| descriptioin | TEXT
+| id | SERIAL PRIMARY KEY |
+| name | VARCHAR(255) |
+| descriptioin | TEXT |
 pictures
 | id | SERIAL PRIMARY KEY
 | recipe_id | INT REFERENCES recipes(id)
