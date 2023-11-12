@@ -1,9 +1,13 @@
 const express = require('express');
 const app = express();
+const path = require('path'); // Import the 'path' module
 const recipeRoutes = require('./routes/recipes'); // Import your recipe routes
 const db = require('./db'); // Import your PostgreSQL database connection
 
 app.use(express.json());
+
+// Serve static files (your front-end files)
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Define routes and middleware here
 app.use('/recipes', recipeRoutes);

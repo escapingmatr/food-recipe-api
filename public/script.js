@@ -1,5 +1,5 @@
 // Define the URL of your API endpoint to retrieve recipe data
-const recipeApiUrl = '/api/recipes';
+const recipeApiUrl = 'http://localhost:3000/recipes'; // Update the URL
 
 // Function to fetch and display recipes
 async function displayRecipes() {
@@ -33,7 +33,7 @@ async function displayRecipeDetails() {
   if (recipeId) {
     // Fetch and display detailed recipe information
     try {
-      const response = await fetch(`/api/recipes/${recipeId}`);
+      const response = await fetch(`${recipeApiUrl}/${recipeId}`);
       const recipe = await response.json();
       const recipeDetails = document.querySelector('.recipe-details');
 
