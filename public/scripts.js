@@ -11,13 +11,23 @@ async function displayRecipes() {
     recipes.forEach((recipe, index) => {
       const recipeBox = document.createElement('div');
       recipeBox.className = 'recipe-box';
-      recipeBox.textContent = recipe.name;
+
+      // Create an image element for the thumbnail
+      const thumbnail = document.createElement('img');
+      thumbnail.className = 'home-thumbnail';
+      thumbnail.src = `${recipe.image_path}/thumbnail.webp`; // Adjust the filename accordingly
+
+      // Create a div for the recipe name
+      const recipeName = document.createElement('div');
+      recipeName.textContent = recipe.name;
 
       // Add click event to navigate to the recipe detail page
       recipeBox.addEventListener('click', () => {
         window.location.href = `recipe.html?id=${recipe.id}`;
       });
 
+      recipeBox.appendChild(thumbnail);
+      recipeBox.appendChild(recipeName);
       recipeList.appendChild(recipeBox);
     });
   } catch (error) {
