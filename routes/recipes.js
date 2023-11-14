@@ -6,14 +6,30 @@ const db = require('../db'); // Import your PostgreSQL database connection
 router.post('/', async (req, res) => {
   try {
     // Extract data from the request body
-    const { id, name, description, ingredients, instructions, pictures } =
+    const { id, name, description, image_path, ingredients, instructions } =
       req.body;
 
     // Insert the new recipe into the database
     const newRecipe = await db.one(
-      'INSERT INTO recipes (id, name, description, ingredients, instructions, pictures) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-      [id, name, description, ingredients, instructions, pictures]
+      'INSERT INTO recipes (id, name, description, image_path) VALUES ($1, $2, $3, $4) RETURNING *',
+      [id, name, description, image_path]
     );
+
+    // Insert ingredients into the database
+    for (const ingredient of ingredients) {
+      await db.none(
+        'INSERT INTO ingredients (recipe_id, name, quantity) VALUES ($1, $2, $3)',
+        [newRecipe.id, ingredient.name, ingredient.quantity]
+      );
+    }
+
+    // Insert instructions into the database
+    for (const instruction of instructions) {
+      await db.none(
+        'INSERT INTO instructions (recipe_id, step_order, description) VALUES ($1, $2, $3)',
+        [newRecipe.id, instruction.step_order, instruction.description]
+      );
+    }
 
     res.status(201).json(newRecipe);
   } catch (error) {
