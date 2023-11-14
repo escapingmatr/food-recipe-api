@@ -41,15 +41,86 @@ async function displayRecipeDetails() {
   const recipeId = urlParams.get('id');
 
   if (recipeId) {
-    // Fetch and display detailed recipe information
     try {
+      // Fetch detailed recipe information including ingredients and instructions
       const response = await fetch(`${recipeApiUrl}/${recipeId}`);
       const recipe = await response.json();
+
+      // Fetch ingredients for the recipe
+      const responseIngredients = await fetch(
+        `${recipeApiUrl}/${recipeId}/ingredients`
+      );
+      const ingredients = await responseIngredients.json();
+
+      // Fetch instructions for the recipe
+      const responseInstructions = await fetch(
+        `${recipeApiUrl}/${recipeId}/instructions`
+      );
+      const instructions = await responseInstructions.json();
+
+      // Select the section to display information
       const recipeDetails = document.querySelector('.recipe-details');
 
-      // Populate recipe details on the page
-      // You can format and display the information as needed
-      recipeDetails.textContent = `Name: ${recipe.name}\nDescription: ${recipe.description}`;
+      // Create an h1 element for the recipe name
+      const recipeTitle = document.createElement('h1');
+      recipeTitle.textContent = recipe.name;
+
+      // Create an image element for the thumbnail
+      const thumbnail = document.createElement('img');
+      thumbnail.src = `${recipe.image_path}/thumbnail.webp`;
+
+      // Create a div for description
+      const description = document.createElement('div');
+      description.textContent = recipe.description;
+
+      // Create a div for ingredients
+      const ingredientsDiv = document.createElement('div');
+      ingredientsDiv.className = 'recipe-section';
+
+      // Populate ingredients
+      const ingredientsTitle = document.createElement('h2');
+      ingredientsTitle.textContent = 'Ingredients';
+      ingredientsDiv.appendChild(ingredientsTitle);
+
+      // Loop through ingredients array
+      ingredients.forEach((ingredient) => {
+        const ingredientItem = document.createElement('p');
+        ingredientItem.textContent = `${ingredient.name}: ${ingredient.quantity}`;
+        ingredientsDiv.appendChild(ingredientItem);
+      });
+
+      // Create a div for instructions
+      const instructionsDiv = document.createElement('div');
+      instructionsDiv.className = 'recipe-section';
+
+      // Populate instructions
+      const instructionsTitle = document.createElement('h2');
+      instructionsTitle.textContent = 'Instructions';
+      instructionsDiv.appendChild(instructionsTitle);
+
+      // Loop through instructions array
+      instructions.forEach((instruction) => {
+        const instructionItem = document.createElement('div');
+        instructionItem.className = 'instruction';
+
+        // Create an image element for each step
+        const stepImage = document.createElement('img');
+        stepImage.src = `${recipe.image_path}/step${instruction.step_order}.webp`; // Adjust the filename accordingly
+
+        const stepDescription = document.createElement('p');
+        stepDescription.textContent = `Step ${instruction.step_order}: ${instruction.description}`;
+
+        instructionItem.appendChild(stepImage);
+        instructionItem.appendChild(stepDescription);
+        instructionsDiv.appendChild(instructionItem);
+      });
+
+      // Append all elements to the recipeDetails container
+      recipeDetails.appendChild(recipeTitle);
+      recipeDetails.appendChild(thumbnail);
+      recipeDetails.appendChild(description);
+      recipeDetails.appendChild(ingredientsDiv);
+      recipeDetails.appendChild(instructionsDiv);
     } catch (error) {
       console.error('Error fetching recipe details:', error);
     }

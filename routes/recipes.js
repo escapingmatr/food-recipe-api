@@ -44,6 +44,40 @@ router.get('/:recipeId', async (req, res) => {
   }
 });
 
+// Get ingredients for a recipe
+router.get('/:recipeId/ingredients', async (req, res) => {
+  const { recipeId } = req.params;
+  try {
+    const ingredients = await db.any(
+      'SELECT * FROM ingredients WHERE recipe_id = $1',
+      recipeId
+    );
+    res.json(ingredients);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: 'An error occurred while fetching ingredients.' });
+  }
+});
+
+// Get instructions for a recipe
+router.get('/:recipeId/instructions', async (req, res) => {
+  const { recipeId } = req.params;
+  try {
+    const instructions = await db.any(
+      'SELECT * FROM instructions WHERE recipe_id = $1',
+      recipeId
+    );
+    res.json(instructions);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: 'An error occurred while fetching instructions.' });
+  }
+});
+
 // Update a recipe by ID
 router.put('/:recipeId', async (req, res) => {
   // Implement update logic here
