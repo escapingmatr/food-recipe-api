@@ -112,6 +112,59 @@ async function deleteRecipe(req, res) {
   }
 }
 
+async function updateRecipeById(req, res) {
+  const { recipeId } = req.params;
+  const { name, description, image_path, ingredients, instructions } = req.body;
+
+  try {
+    // Fetch the existing recipe to get the current values
+    const existingRecipe = await db.one(
+      'SELECT * FROM recipes WHERE id = $1',
+      recipeId
+    );
+
+    // Update only the fields that are provided in the request body
+    const updatedRecipe = await db.one(
+      'UPDATE recipes SET name = $1, description = $2, image_path = $3 WHERE id = $4 RETURNING *',
+      [
+        name || existingRecipe.name,
+        description || existingRecipe.description,
+        image_path || existingRecipe.image_path,
+        recipeId,
+      ]
+    );
+
+    // Update ingredients for the recipe
+    if (ingredients) {
+      await db.none('DELETE FROM ingredients WHERE recipe_id = $1', recipeId);
+      for (const ingredient of ingredients) {
+        await db.none(
+          'INSERT INTO ingredients (recipe_id, name, quantity) VALUES ($1, $2, $3)',
+          [recipeId, ingredient.name, ingredient.quantity]
+        );
+      }
+    }
+
+    // Update instructions for the recipe
+    if (instructions) {
+      await db.none('DELETE FROM instructions WHERE recipe_id = $1', recipeId);
+      for (const instruction of instructions) {
+        await db.none(
+          'INSERT INTO instructions (recipe_id, step_order, description) VALUES ($1, $2, $3)',
+          [recipeId, instruction.step_order, instruction.description]
+        );
+      }
+    }
+
+    res.json(updatedRecipe);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: 'An error occurred while updating the recipe.' });
+  }
+}
+
 // Other controller functions for updating and deleting recipes can be added here
 
 module.exports = {
@@ -120,5 +173,6 @@ module.exports = {
   getIngredientsForRecipe,
   getInstructionsForRecipe,
   deleteRecipe,
+  updateRecipeById,
   // Add other exported functions as needed
 };

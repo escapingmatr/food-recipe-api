@@ -19,7 +19,7 @@ router.get(
 );
 
 // Update a recipe by ID
-router.put('/:recipeId' /* Add your updateRecipeById controller function */);
+router.put('/:recipeId', recipeController.updateRecipeById);
 
 // Delete a recipe by ID
 router.delete('/:recipeId', recipeController.deleteRecipe);
