@@ -5,13 +5,13 @@ const db = require('../db');
 async function createRecipe(req, res) {
   try {
     // Extract data from the request body
-    const { id, name, description, image_path, ingredients, instructions } =
+    const { name, description, image_path, ingredients, instructions } =
       req.body;
 
     // Insert the new recipe into the database
     const newRecipe = await db.one(
-      'INSERT INTO recipes (id, name, description, image_path) VALUES ($1, $2, $3, $4) RETURNING *',
-      [id, name, description, image_path]
+      'INSERT INTO recipes (name, description, image_path) VALUES ($1, $2, $3) RETURNING id',
+      [name, description, image_path]
     );
 
     // Insert ingredients into the database
