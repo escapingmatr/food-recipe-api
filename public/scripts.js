@@ -12,13 +12,21 @@ async function displayRecipes() {
       const recipeBox = document.createElement('div');
       recipeBox.className = 'recipe-box';
 
+      // Create a div for the thumbnail container
+      const thumbnailContainer = document.createElement('div');
+      thumbnailContainer.className = 'thumbnail-container';
+
       // Create an image element for the thumbnail
       const thumbnail = document.createElement('img');
       thumbnail.className = 'home-thumbnail';
       thumbnail.src = `${recipe.image_path}/thumbnail.webp`; // Adjust the filename accordingly
 
+      // Append thumbnail to the container
+      thumbnailContainer.appendChild(thumbnail);
+
       // Create a div for the recipe name
       const recipeName = document.createElement('div');
+      recipeName.className = 'recipe-name';
       recipeName.textContent = recipe.name;
 
       // Add click event to navigate to the recipe detail page
@@ -26,7 +34,7 @@ async function displayRecipes() {
         window.location.href = `recipe.html?id=${recipe.id}`;
       });
 
-      recipeBox.appendChild(thumbnail);
+      recipeBox.appendChild(thumbnailContainer);
       recipeBox.appendChild(recipeName);
       recipeList.appendChild(recipeBox);
     });
