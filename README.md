@@ -1,5 +1,10 @@
 # food-recipe-api
 
+```
+npm init
+node app.js
+```
+
 Web app for sharing food recipes developed with NodeJS, providing APIs
 
 DB Structure:
