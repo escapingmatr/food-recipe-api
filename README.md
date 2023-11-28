@@ -13,9 +13,9 @@ node app.js
 
 The server will be available on localhost:3000,
 localhost:3000/recipes to show every recipe,
-localhost:3000/<id> to show the specific recipe,
-localhost:3000/<id>/ingredients for the ingredients for the recipe,
-localhost:3000/<id>/instructions for the instructions to create the dish.
+localhost:3000/id to show the specific recipe,
+localhost:3000/id/ingredients for the ingredients for the recipe,
+localhost:3000/id/instructions for the instructions to create the dish.
 
 ## Content Type: JSON
 
