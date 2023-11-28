@@ -11,11 +11,14 @@ npm init
 node app.js
 ```
 
-The server will be available on localhost:3000,
-localhost:3000/recipes to show every recipe,
-localhost:3000/id to show the specific recipe,
-localhost:3000/id/ingredients for the ingredients for the recipe,
-localhost:3000/id/instructions for the instructions to create the dish.
+The server will be available on localhost:3000.
+
+| Address                        | Function                             |
+| ------------------------------ | ------------------------------------ |
+| localhost:3000/recipes         | show every recipe                    |
+| localhost:3000/id              | show the specific recipe with the id |
+| localhost:3000/id/ingredients  | ingredients for the recipe           |
+| localhost:3000/id/instructions | instructions to create the dish      |
 
 ## Content Type: JSON
 
